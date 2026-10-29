@@ -3,6 +3,8 @@
 ## STEP 0: Install all relevant python packages 
 (reccomended to install into a virtual environment to avoid conflicts)
 ```bash
+python -m venv venv
+.\.venv\Scripts\activate # In the same directory
 python -m pip install yfinance numpy pandas matplotlib yaml
 ```
 
