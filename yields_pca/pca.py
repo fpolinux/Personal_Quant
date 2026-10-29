@@ -93,3 +93,4 @@ plt.title("Explained Variance by Principal Component")
 plt.ylabel("Explained Variance")
 plt.ylim(0, exp_var["Explained variance ratio"].max()*1.15)  # pad labels
 plt.show()
+
