@@ -1,6 +1,7 @@
 #How to use
 
-## STEP 0: Install all relevant python packages (reccomend to install into a virtual environment to avoid conflicts)
+## STEP 0: Install all relevant python packages 
+(reccomended to install into a virtual environment to avoid conflicts)
 ```bash
 python -m pip install yfinance numpy pandas matplotlib yaml
 ```
@@ -22,4 +23,4 @@ Historical examples of some of the DCFs I have run are in the sample configs fol
 Some have notes on where I have pulled my assumptions from. Often, this is as simple as CapIQ, or calculated manually from earnings reports. 
 
 Output should look like:
-![DCF Sample Output](./"Sample_output.png")
+![Sample_output.png]("Sample_output.png")
