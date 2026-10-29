@@ -23,4 +23,4 @@ Historical examples of some of the DCFs I have run are in the sample configs fol
 Some have notes on where I have pulled my assumptions from. Often, this is as simple as CapIQ, or calculated manually from earnings reports. 
 
 Output should look like:
-![DCF Sample Output]("./dcf_engine/Sample_output.png")
+![DCF Sample Output]("./Sample_output.png")
