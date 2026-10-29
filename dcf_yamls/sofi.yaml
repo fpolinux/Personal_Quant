@@ -1,0 +1,68 @@
+# === DCF CONFIG ===
+ticker: SOFI
+metadata:
+  as_of: 2025-10-8   # date of inputs
+
+data_source:
+  # If true, will pull data from yfinance; else use overrides
+  use_yfinance: true
+  #overrides:
+    # Any of these (if provided) will supersede yfinance values
+    #shares_outstanding: pass    # number
+    #net_debt:           # negative = net cash
+    #base_revenue: 4.067e8          # FY24 revenue or latest
+
+model:
+  horizon_years: 5
+  simulation_runs: 10000
+
+  revenue:
+    # Base is taken from data_source.overrides.base_revenue if provided; else pulled from yfinance if available.
+    growth:
+      dist: normal      # normal | triangular | uniform | fixed
+      # Using ln(GP) = a + bt model with growth = b
+      mean: 0.18
+      sd: 0.05
+
+  ebit_margin:
+    # Use a distribution that reflects uncertainty
+    dist: triangular    # normal | triangular | uniform | fixed
+    # Using ebit margins from Intuit (comparable)
+    low: 0.20
+    mode: 0.25
+    high: 0.29
+
+  tax_rate:
+    value: 0.14      # Effective tax rate, fixed
+
+  depreciation:
+    # Select between % of reveue, 'absolute', or pct_of_pp&e 
+    type: pct_of_revenue
+    dist: normal
+    value: 0.05
+    sd: 0.01
+
+  capex:
+    type: pct_of_revenue
+    dist: uniform
+    low: 0.05
+    high: 0.07
+
+  wacc:
+    dist: normal
+    # WACC for NYU-Stern Financials sector ~ 5.46% (software WACC is closer to 9.61%)
+    mean: 0.06
+    sd: 0.02
+    #clamp: [0.06, 0.14]    # optional min/max to avoid silly draws
+
+  terminal_growth:
+    dist: normal
+    mean: 0.04
+    sd: 0.01
+    clamp: [-0.005, 0.05] # optional
+
+  net_debt_treatment: include   # include | zero_out | treat_cash_as_strategic
+
+output:
+  histogram_bins: 60
+  percentiles: [5, 10, 25, 50, 75, 90, 95]

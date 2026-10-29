@@ -1,0 +1,64 @@
+# === DCF CONFIG ===
+ticker: GOOGL
+metadata:
+  as_of: 2026-08-15   # date of inputs
+
+data_source:
+  # If you want to pull some fields automatically, keep these true and override selectively below.
+  use_yfinance: true
+  #overrides:
+    # Any of these (if provided) will supersede yfinance values
+    #shares_outstanding: pass    # number
+    #net_debt:           # negative = net cash
+    #base_revenue: 4.067e8          # FY24 revenue or latest
+
+model:
+  horizon_years: 5
+  simulation_runs: 20000
+
+  revenue:
+    # Base is taken from data_source.overrides.base_revenue if provided; else pulled from yfinance if available.
+    growth:
+      dist: normal      ## trad_g: 27.1% and revenue: 15%
+      mean: 0.30
+      sd: 0.05
+
+  ebit_margin:
+    # Use a distribution that reflects uncertainty5
+    dist: triangular    # normal | triangular | uniform | fixed
+    low: 0.26
+    mode: 0.30
+    high: 0.32
+
+  tax_rate:
+    value: 0.21         # Effective tax rate, fixed
+
+  depreciation:
+    # Select between % of reveue, 'absolute', or pct_of_pp&e 
+    type: pct_of_revenue
+    dist: normal
+    value: 0.048
+    sd: 0.012
+
+  capex:
+    type: pct_of_revenue
+    dist: uniform
+    low: 0.15
+    high: 0.22
+  wacc:
+    dist: normal
+    mean: 0.0934
+    sd: 0.02
+    #clamp: [0.06, 0.14]    # optional min/max to avoid silly draws
+
+  terminal_growth:
+    dist: normal
+    mean: 0.05
+    sd: 0.003
+    clamp: [-0.005, 0.05] # optional
+
+  net_debt_treatment: include   # include | zero_out | treat_cash_as_strategic
+
+output:
+  histogram_bins: 60
+  percentiles: [5, 10, 25, 50, 75, 90, 95]
